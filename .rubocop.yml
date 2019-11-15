@@ -1,3 +1,5 @@
+# rubocop:disable Style/CaseEquality 
+
 AllCops:
   Exclude:
     - "bin/*"

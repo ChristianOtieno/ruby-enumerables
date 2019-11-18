@@ -1,7 +1,32 @@
 module Enumerable
   def my_each
-  
+    i = 0
+    while i < self.size
+      yield(self[i])
+      i += 1
+    end
   end
+  
+  def my_each_index
+    i = 0
+    while i < self.size
+      yield(self[i], i)
+      i += 1
+    end        
+  end
+  
+  def my_select
+    i = 0
+    arr = []
+    while i < self.size
+      if yield(self[i])
+        arr << self[i]
+      end
+      i += 1
+    end
+    arr
+  end
+
   def my_each_with_index
     
   end

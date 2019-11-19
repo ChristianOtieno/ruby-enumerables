@@ -46,10 +46,13 @@ module Enumerable
     true
   end
 
-  def my_any?
-    x = false
-    my_each { |e| x = true if yield(e) }
-    x
+  def my_any?(arg = nil, &proc)
+    if block_given?
+      my_each { |e| return true if proc.nil? ? proc.call(e) : yield(e) }
+    else
+      my_each { |e| return true if arg.nil? ? elem : check_validity(e, arg) }
+    end
+    false
   end
 
   def my_none?

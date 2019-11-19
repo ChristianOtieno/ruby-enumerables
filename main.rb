@@ -3,6 +3,7 @@
 module Enumerable
   def my_each
     return to_enum unless block_given?
+
     entry = is_a?(Range) ? to_a : self
     i = 0
     while i < size
@@ -14,8 +15,9 @@ module Enumerable
 
   def my_each_with_index
     return to_enum unless block_given?
+
     entry = is_a?(Range) ? to_a : self
-    
+
     i = 0
     while i < size
       yield(self[i], i)
@@ -87,14 +89,14 @@ module Enumerable
     array.my_inject(1) { |x, y| x * y }
   end
 
-  def check_validity(e, a)
-    return e.is_a?(a) if a.is_a?(Class)
+  def check_validity(elem, param)
+    return elem.is_a?(param) if param.is_a?(Class)
 
-    if a.is_a?(Regexp)
-      return false if e.is_a?(Numeric)
+    if param.is_a?(Regexp)
+      return false if elem.is_a?(Numeric)
 
-      return a.match(entry)
+      return param.match(entry)
     end
-    (e == a)
+    (elem == param)
   end
 end

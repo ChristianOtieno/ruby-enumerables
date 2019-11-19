@@ -76,14 +76,16 @@ module Enumerable
   end
 
 
-  def my_map(my_map_proc = nil)
-    x = []
-    if my_map_proc.nil?
-      my_each { |e| x << yield(e) }
+  def my_map(block = nil)
+    return to_enum unless block_given?
+
+    arr = []
+    if block
+      my_each_with_index { |e, i| arr[i] = block.call(e) }
     else
-      my_each { |e| x << (my_map_proc.call e) }
+      my_each_with_index { |e, i| arr[i] = yield(e) }
     end
-    x
+    arr
   end
 
   def my_inject(val)

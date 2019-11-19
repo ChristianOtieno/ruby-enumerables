@@ -69,8 +69,7 @@ module Enumerable
     total
   end
 
-  def my_map
-    (my_map_proc = nil)
+  def my_map(my_map_proc = nil)
     x = []
     if my_map_proc.nil?
       my_each { |e| x << yield(e) }

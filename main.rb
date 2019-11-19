@@ -2,22 +2,31 @@
 
 module Enumerable
   def my_each
+    return to_enum unless block_given?
+    entry = is_a?(Range) ? to_a : self
     i = 0
     while i < size
       yield(self[i])
       i += 1
     end
+    entry
   end
 
   def my_each_with_index
+    return to_enum unless block_given?
+    entry = is_a?(Range) ? to_a : self
+    
     i = 0
     while i < size
       yield(self[i], i)
       i += 1
     end
+    entry
   end
 
   def my_select
+    return to_enum unless block_given?
+
     i = 0
     arr = []
     while i < size

@@ -37,9 +37,13 @@ module Enumerable
   end
 
   def my_all?
-    x = true
-    my_each { |e| x = false unless yield(e) }
-    x
+    if block_given?
+      x = true
+      my_each { |e| x = false unless yield(e) }
+      x
+    end
+    my_each { |e| return false unless check_validity(e, arg) }
+    true
   end
 
   def my_any?
@@ -78,5 +82,16 @@ module Enumerable
 
   def multiply_els(array)
     array.my_inject(1) { |x, y| x * y }
+  end
+
+  def check_validity(e, a)
+    return e.is_a?(a) if a.is_a?(Class)
+
+    if a.is_a?(Regexp)
+      return false if e.is_a?(Numeric)
+
+      return a.match(entry)
+    end
+    (e == a)
   end
 end

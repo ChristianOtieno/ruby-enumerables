@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+#!/usr/bin/env ruby
 
 module Enumerable
   def my_each
@@ -38,11 +38,13 @@ module Enumerable
     arr
   end
 
-  def my_all?
+  def my_all?(arg = nil)
     if block_given?
-      x = true
-      my_each { |e| x = false unless yield(e) }
-      x
+      my_each { |e| return false unless yield(e) }
+    end
+    if arg.nil?
+      my_each { |e| return false unless e }
+      return true
     end
     my_each { |e| return false unless check_validity(e, arg) }
     true
@@ -57,17 +59,22 @@ module Enumerable
     false
   end
 
-  def my_none?
-    x = true
-    my_each { |e| x = false if yield(e) }
-    x
+  def my_none?(pattern = nil, &proc)
+    !my_any?(pattern, &proc)
   end
 
-  def my_count
-    total = 0
-    my_each { total += 1 }
-    total
+  def my_count(num = nil)
+    count = 0
+    if num
+      my_each { |e| count += 1 if e == num }
+    elsif block_given?
+      my_each { |e| count += 1 if yield(e) }
+    else
+      count = length
+    end
+    count
   end
+
 
   def my_map(my_map_proc = nil)
     x = []

@@ -13,12 +13,6 @@ module Enumerable
     end
     entry
   end
-  #   [1,2,3,4].my_each {|x| puts x * 2}
-  #   output:
-  #   2
-  #   4
-  #   6
-  #   8
 
   def my_each_with_index
     return to_enum unless block_given?
@@ -33,13 +27,6 @@ module Enumerable
     entry
   end
 
-  #   [4,5,3,2].my_each_with_index {|val,index| puts "index: #{index} for #{val}" if val < 10}
-  #   output:
-  #   index: 0 for 4
-  #   index: 1 for 5
-  #   index: 2 for 3
-  #   index: 3 for 2
-
   def my_select
     return to_enum unless block_given?
 
@@ -51,11 +38,6 @@ module Enumerable
     end
     arr
   end
-  #   puts [1,2,3,4,5,6].my_select(&:even?)
-  #   output:
-  #   2
-  #   4
-  #   6
 
   def my_all?(pattern = nil)
     unless block_given?
@@ -72,9 +54,6 @@ module Enumerable
     my_each { |x| return false unless yield x }
     true
   end
-    # puts %w[ant bear cat].my_all? { |word| word.length >= 8 }
-  #   output:
-  #   false
 
   def my_any?(pattern = nil)
     unless block_given?
@@ -91,9 +70,6 @@ module Enumerable
     my_each { |x| return true if yield x }
     false
   end    
-    # puts %w[ant bear cat].my_any? { |word| word.length >= 8 }
-    #   output:
-    #   false
 
   def my_none?(pattern = nil)
     if block_given?
@@ -105,9 +81,6 @@ module Enumerable
       true
     end
   end
-    # puts  ["ant", "bear", "cat"].my_none? { |word| word.length == 5 }
-  #   output:
-  #   true
 
   def my_count(xander = nil)
     count = 0
@@ -120,10 +93,6 @@ module Enumerable
     end
     count
   end
-  #   ary = [1, 2, 4, 2]
-  #   puts ary.my_count               #=> 4
-  #   puts ary.my_count(2)            #=> 2
-  #   puts ary.my_count{ |x| x%2==0 } #=> 3
 
   def my_map
     return to_enum :my_map unless block_given?
@@ -132,7 +101,7 @@ module Enumerable
     arr = []
 
     while i < size
-      array2 << if block_given?
+      arr << if block_given?
                   yield(self[i])
                 else
                   proc.call(self[i])
@@ -160,15 +129,12 @@ module Enumerable
     end
     initial
   end
-    # puts (5..10).my_inject { |sum, n| sum + n } #=> 45
-
+    
   def multiply_els
     result = 1
     my_each { |element| result *= element }
     result
   end
-  #   array = [2,4,5]
-  #   puts array.multiply_els #=> 40
 
   def check_validity(entry, param)
     if entry.is_a? Regexp

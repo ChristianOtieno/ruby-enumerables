@@ -81,16 +81,20 @@ module Enumerable
   end
 
 
-  def my_count(num = nil)
-    count = 0
-    if num
-      my_each { |e| count += 1 if e == num }
-    elsif block_given?
-      my_each { |e| count += 1 if yield(e) }
-    else
-      count = length
+  def my_count
+    return to_enum unless block_given?
+    
+    elem = 0
+
+    i = 0
+    while i < size
+
+      if yield(self[i])
+        elem += 1
+      end
+      i += 1
     end
-    count
+    return elem
   end
 
 

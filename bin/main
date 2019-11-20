@@ -80,7 +80,7 @@ module Enumerable
     end
     false
   end
-  #   puts %w[ant bear cat].any? { |word| word.length >= 8 }
+    puts %w[ant bear cat].my_any? { |word| word.length >= 8 }
   #   output:
   #   false
 

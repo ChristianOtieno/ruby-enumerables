@@ -52,13 +52,18 @@ module Enumerable
     return elem
   end
 
-  def my_any?(arg = nil, &proc)
-    if block_given?
-      my_each { |e| return true if proc.nil? ? proc.call(e) : yield(e) }
-    else
-      my_each { |e| return true if arg.nil? ? elem : check_validity(e, arg) }
+  def my_any?
+    return to_enum unless block_given?
+
+    i = 0
+    while i < size
+
+      if yield(self[i])
+        return true
+      end
+      i += 1
     end
-    false
+    return false 
   end
 
   def my_none?(pattern = nil, &proc)

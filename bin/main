@@ -38,16 +38,18 @@ module Enumerable
     arr
   end
 
-  def my_all?(arg = nil)
-    if block_given?
-      my_each { |e| return false unless yield(e) }
+  def my_all?
+    return to_enum unless block_given?
+
+    elem = true
+    i = 0
+    while i < size
+      if !yield(self[i])
+        elem = false
+      end
+      i += 1
     end
-    if arg.nil?
-      my_each { |e| return false unless e }
-      return true
-    end
-    my_each { |e| return false unless check_validity(e, arg) }
-    true
+    return elem
   end
 
   def my_any?(arg = nil, &proc)

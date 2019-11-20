@@ -1,5 +1,12 @@
 #!/usr/bin/env ruby
+
 # frozen_string_literal: true
+
+# rubocop:disable Metrics/PerceivedComplexity
+
+# rubocop:disable Metrics/CyclomaticComplexity
+
+# rubocop:disable Metrics/ModuleLength
 
 module Enumerable
   def my_each
@@ -111,23 +118,27 @@ module Enumerable
     arr
   end
 
-  def my_inject(initial = nil, sym = nil)
-    if block_given?
-      my_each { |item| initial = yield initial, item }
-    else
-      unless sym
-        raise 'No symbol nor block given' unless initial.class == Symbol
-
-        sym = initial
-        initial = self[0]
+  def my_inject(*args)
+    arr = to_a
+    case args.length
+    when 0
+      output = arr[0]
+      arr.my_each_with_index { |x, i| output = yield(output, x) unless i.zero? }
+    when 1
+      if args[0].is_a? Integer
+        output = args[0]
+        arr.my_each { |x| output = yield(output, x) }
+        return output
       end
-      my_each do |item|
-        next if initial == item
-
-        initial = initial.send sym, item
-      end
+      output = arr[0]
+      action = args[0]
+      arr.my_each_with_index { |x, i| output = output.method(action).call(x) unless i.zero? }
+    when 2
+      output = args[0]
+      action = args[1]
+      arr.my_each { |x| output = output.method(action).call(x) }
     end
-    initial
+    output
   end
     
   def multiply_els

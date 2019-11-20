@@ -57,7 +57,6 @@ module Enumerable
 
     i = 0
     while i < size
-
       if yield(self[i])
         return true
       end
@@ -66,9 +65,21 @@ module Enumerable
     return false 
   end
 
-  def my_none?(pattern = nil, &proc)
-    !my_any?(pattern, &proc)
+  def my_none?
+    return to_enum unless block_given?
+        
+    elem = true
+
+    i = 0
+    while i < size
+      if yield(self[i])
+        elem = false
+      end
+      i += 1
+    end
+    return elem
   end
+
 
   def my_count(num = nil)
     count = 0

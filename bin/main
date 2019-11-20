@@ -83,7 +83,7 @@ module Enumerable
 
   def my_count
     return to_enum unless block_given?
-    
+
     elem = 0
 
     i = 0
@@ -98,18 +98,22 @@ module Enumerable
   end
 
 
-  def my_map(block = nil)
-    return to_enum unless block_given?
-
-    arr = []
-    if block
-      my_each_with_index { |e, i| arr[i] = block.call(e) }
-    else
-      my_each_with_index { |e, i| arr[i] = yield(e) }
+  def my_map(arr, prc=nil)
+    elem = []
+    
+    i = 0
+    while i < arr.length
+      
+      if block_given?
+        yield(arr[i])
+      else
+        elem << prc.call(arr[i])
+      end
+      i += 1
     end
-    arr
+    return elem
   end
-
+  
   def my_inject(val)
     my_each { |e| val = yield(val, e) }
     val

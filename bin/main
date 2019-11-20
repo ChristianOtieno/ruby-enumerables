@@ -31,6 +31,8 @@ module Enumerable
     end
     entry
   end
+[4,5,3,2].my_each_with_index {|val,index| puts "index: #{index} for #{val}" if val < 10}
+# output = 2 4 6 8
 
   def my_select
     return to_enum unless block_given?

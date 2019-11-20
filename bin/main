@@ -99,6 +99,7 @@ module Enumerable
 
 
   def my_map(arr, prc=nil)
+    
     elem = []
     
     i = 0
@@ -114,9 +115,16 @@ module Enumerable
     return elem
   end
   
-  def my_inject(val)
-    my_each { |e| val = yield(val, e) }
-    val
+  def my_inject(arr)
+    
+    elem = arr[0]
+
+    i = 0
+    while i < arr.length
+      elem = yield(elem, arr[i])
+      i += 1
+    end
+    return elem
   end
 
   def multiply_els(array)

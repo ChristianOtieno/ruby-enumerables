@@ -161,5 +161,13 @@ module Enumerable
   #   array = [2,4,5]
   #   puts array.multiply_els #=> 40
 
-  
+  def check_validity(entry, param)
+    if entry.is_a? Regexp
+      !entry.to_s.match(param).nil?
+    elsif param.is_a? Class
+      (entry.class == param)
+    else
+      (entry == param)
+    end
+  end
 end

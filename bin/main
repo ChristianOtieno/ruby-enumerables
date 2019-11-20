@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# frozen_string_literal: true
+
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -44,12 +46,10 @@ module Enumerable
     elem = true
     i = 0
     while i < size
-      if !yield(self[i])
-        elem = false
-      end
+      elem = false unless yield(self[i])
       i += 1
     end
-    return elem
+    elem
   end
 
   def my_any?
@@ -57,29 +57,25 @@ module Enumerable
 
     i = 0
     while i < size
-      if yield(self[i])
-        return true
-      end
+      return true if yield(self[i])
+
       i += 1
     end
-    return false 
+    false
   end
 
   def my_none?
     return to_enum unless block_given?
-        
+
     elem = true
 
     i = 0
     while i < size
-      if yield(self[i])
-        elem = false
-      end
+      elem = false if yield(self[i])
       i += 1
     end
-    return elem
+    elem
   end
-
 
   def my_count
     return to_enum unless block_given?
@@ -89,22 +85,18 @@ module Enumerable
     i = 0
     while i < size
 
-      if yield(self[i])
-        elem += 1
-      end
+      elem += 1 if yield(self[i])
       i += 1
     end
-    return elem
+    elem
   end
 
-
-  def my_map(arr, prc=nil)
-    
+  def my_map(arr, prc = nil)
     elem = []
-    
+
     i = 0
     while i < arr.length
-      
+
       if block_given?
         yield(arr[i])
       else
@@ -112,11 +104,10 @@ module Enumerable
       end
       i += 1
     end
-    return elem
+    elem
   end
-  
+
   def my_inject(arr)
-    
     elem = arr[0]
 
     i = 0
@@ -124,12 +115,12 @@ module Enumerable
       elem = yield(elem, arr[i])
       i += 1
     end
-    return elem
+    elem
   end
 
   def multiply_els(arr)
-    return my_inject(arr) do |output, x| 
-        result * x
+    my_inject(arr) do |_output, x|
+      result * x
     end
   end
 

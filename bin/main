@@ -127,8 +127,10 @@ module Enumerable
     return elem
   end
 
-  def multiply_els(array)
-    array.my_inject(1) { |x, y| x * y }
+  def multiply_els(arr)
+    return my_inject(arr) do |output, x| 
+        result * x
+    end
   end
 
   def check_validity(elem, param)

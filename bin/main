@@ -57,46 +57,55 @@ module Enumerable
   #   4
   #   6
 
-  def my_all?(_arg = nil)
-    return true unless block_given?
+  def my_all?(pattern = nil)
+    unless block_given?
+      return my_all? { |obj| obj } unless pattern
 
-    my_each do |x|
-      return false unless yield x
+      if pattern.class == Regexp
+        my_all? { |x| pattern.match(x) }
+      elsif pattern.class == Class
+        my_all? { |x| x.is_a? pattern }
+      else
+        my_all? { |x| x === pattern }
+      end
     end
+    my_each { |x| return false unless yield x }
     true
   end
-  #   puts %w[ant bear cat].my_all? { |word| word.length >= 8 }
+    # puts %w[ant bear cat].my_all? { |word| word.length >= 8 }
   #   output:
   #   false
 
-  def my_any?(_arg = nil)
-    return true unless block_given?
+  def my_any?(pattern = nil)
+    unless block_given?
+      return my_any? { |obj| obj } unless pattern
 
-    i = 0
-    while i < size
-      return true if yield(self[i])
-
-      i += 1
+      if pattern.class == Regexp
+        my_any? { |x| pattern.match(x) }
+      elsif pattern.class == Class
+        my_any? { |x| x.is_a? pattern }
+      else
+        my_any? { |x| x === pattern }
+      end
     end
+    my_each { |x| return true if yield x }
     false
-  end
+  end    
     # puts %w[ant bear cat].my_any? { |word| word.length >= 8 }
-  #   output:
-  #   false
+    #   output:
+    #   false
 
-  def my_none?
-    return false unless block_given?
-
-    elem = true
-
-    i = 0
-    while i < size
-      elem = false if yield(self[i])
-      i += 1
+  def my_none?(pattern = nil)
+    if block_given?
+      !my_any? { |x| yield x }
+    elsif pattern
+      !my_any?(pattern)
+    else
+      my_each { |x| return false if x }
+      true
     end
-    elem
   end
-  #   puts  ["ant", "bear", "cat"].my_none? { |word| word.length == 5 }
+    # puts  ["ant", "bear", "cat"].my_none? { |word| word.length == 5 }
   #   output:
   #   true
 
@@ -133,25 +142,25 @@ module Enumerable
     arr
   end
 
-  def my_inject(param = nil)
-    arr_input = self.class == Range ? to_a : self
-    result = param.nil? || param.is_a?(Symbol) ? arr_input[0] : param
-
+  def my_inject(initial = nil, sym = nil)
     if block_given?
-      pointr = param.nil? ? 1 : 0
-      arr_input[pointr..-1].my_each do |element|
-        result = yield(result, element)
+      my_each { |item| initial = yield initial, item }
+    else
+      unless sym
+        raise 'No symbol nor block given' unless initial.class == Symbol
+
+        sym = initial
+        initial = self[0]
       end
-      return result
-    end
+      my_each do |item|
+        next if initial == item
 
-    arr_input[1..-1].my_each do |element|
-      result = result.send(param, element)
+        initial = initial.send sym, item
+      end
     end
-
-    result
+    initial
   end
-  #   puts (5..10).my_inject { |sum, n| sum + n } #=> 45
+    # puts (5..10).my_inject { |sum, n| sum + n } #=> 45
 
   def multiply_els
     result = 1

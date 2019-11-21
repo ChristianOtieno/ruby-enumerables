@@ -144,6 +144,4 @@ module Enumerable
   end
 end
 
-# arr = [1,5,8,7,4,8]
-# p arr.my_none? == arr.none? #true
-# p arr.my_none?(Float) == arr.none?(Float) #true
+

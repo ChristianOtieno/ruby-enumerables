@@ -61,18 +61,13 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-    unless block_given?
-      return my_any? { |obj| obj } unless pattern
-
-      if pattern.class == Regexp
-        my_any? { |x| pattern.match(x) }
-      elsif pattern.class == Class
-        my_any? { |x| x.is_a? pattern }
-      else
-        my_any? { |x| x === pattern }
-      end
+    if block_given?
+      my_each { |x| return true if yield x }
+    elsif pattern
+      my_each { |x| return true if pattern === x }
+    else
+      my_each { |x| return true if x }
     end
-    my_each { |x| return true if yield x }
     false
   end    
 
@@ -157,10 +152,10 @@ module Enumerable
 end
 
 # array = [1,2,5,4,7]
-# p array.my_all?(Integer) # true
+# p array.my_any?(Integer) == array.any?(Integer) # true
 
 # array = %w[dog door rod blade]
-#   p array.my_all?(/c/) == array.all?(/c/) # true
+# p array.my_any?(/c/) == array.any?(/c/) # true
 
 # array = %w[dog door rod blade]
-# p array.my_all?(5) == array.all?(5) # true
+# p array.my_any?(5) == array.any?(5) # true

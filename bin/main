@@ -71,15 +71,8 @@ module Enumerable
     false
   end    
 
-  def my_none?(pattern = nil)
-    if block_given?
-      !my_any? { |x| yield x }
-    elsif pattern
-      !my_any?(pattern)
-    else
-      my_each { |x| return false if x }
-      true
-    end
+  def my_none?(pattern = nil, &a_block)
+    !my_any?(pattern, &a_block)
   end
 
   def my_count(xander = nil)
@@ -151,11 +144,6 @@ module Enumerable
   end
 end
 
-# array = [1,2,5,4,7]
-# p array.my_any?(Integer) == array.any?(Integer) # true
-
-# array = %w[dog door rod blade]
-# p array.my_any?(/c/) == array.any?(/c/) # true
-
-# array = %w[dog door rod blade]
-# p array.my_any?(5) == array.any?(5) # true
+# arr = [1,5,8,7,4,8]
+# p arr.my_none? == arr.none? #true
+# p arr.my_none?(Float) == arr.none?(Float) #true

@@ -144,4 +144,3 @@ module Enumerable
   end
 end
 
-

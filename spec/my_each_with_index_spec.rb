@@ -1,6 +1,7 @@
 require './bin/main.rb'
 
 RSpec.describe Enumerable do
+    
     describe '.each_with_index should return' do
     it 'an enumerator when no block is given' do
       enumerator = [1, 2, 3, 4, 5].my_each_with_index
@@ -16,4 +17,5 @@ RSpec.describe Enumerable do
       end
     end
   end
+  
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './bin/main.rb'
 
 # when .all? should return true

@@ -3,7 +3,7 @@
 require './bin/main.rb'
 
 # when .all? should return true
-describe Enumerable do
+RSpec.describe Enumerable do
   describe 'my_all? should return true when all items' do
     it 'are truthy' do
       expect([1, 2i, 3.14].my_all?(Numeric)).to eq(true)
@@ -18,10 +18,9 @@ describe Enumerable do
       expect(%w[i am a string].my_all?(String)).to eq(true)
     end
   end
-end
 
-# when .all? should return false
-describe Enumerable do
+  # when .all? should return false
+
   describe '.all? should return false when some element' do
     it 'is falsy' do
       expect([nil, true, 99].my_all?).not_to eq(true)

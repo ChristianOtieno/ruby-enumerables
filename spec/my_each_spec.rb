@@ -3,7 +3,6 @@
 require './bin/main.rb'
 
 RSpec.describe Enumerable do
-  let(:a) { (1..9) }
   describe '#my_each' do
     it 'returns an enumerator when no block is given' do
       enumerator = [1, 2, 3, 4, 5].my_each

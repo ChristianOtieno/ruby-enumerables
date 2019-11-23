@@ -19,10 +19,8 @@ RSpec.describe Enumerable do
       expect(a.my_any?(Integer)).to be true
     end
   end
-end
 
-# when .any? should return false
-describe Enumerable do
+  # when .any? should return false
   describe '.any? should return false when no item' do
     it 'is truthy' do
       expect([nil, false, nil].my_any?).to be false

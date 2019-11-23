@@ -2,7 +2,7 @@ require './bin/main.rb'
 
 # when .all? should return true
 describe Enumerable do
-  describe '.all? should return true when all items' do
+  describe 'my_all? should return true when all items' do
     it 'are truthy' do
       expect([1, 2i, 3.14].my_all?(Numeric)).to eq(true)
     end
